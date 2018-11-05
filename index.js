@@ -17,9 +17,10 @@ program
   .option( '-g --githubToken <githubToken>')
   .option( '-t --travisToken <travisToken>')
   .option( '-o --githubOrg <githubOrg>')
+  .option( '-s --sshEnable <boolean>')
   .description( 'Configure the application.' )
   .action(options => {
-    const { githubOrg, githubToken, travisToken } = options;
+    const { githubOrg, githubToken, travisToken, sshEnable } = options;
     if (githubOrg) {
       prefs.githubOrg = githubOrg;
       alert( 'github organization configured' );
@@ -32,6 +33,10 @@ program
       prefs.travisToken = travisToken;
       alert( 'travis token configured' );
     }
+    if (sshEnable) {
+      if (sshEnable === 'false') prefs.sshEnabled = false;
+      else prefs.sshEnabled = true;
+      alert( `SSH Github access is ${prefs.sshEnabled ? 'en':'dis'}abled` );    }
   });
 
 program
@@ -41,6 +46,7 @@ program
   .action((cmd) => {
     if (cmd.showKeys && prefs.githubToken) alert(`Current github token is ${prefs.githubToken}`);
     if (cmd.showKeys && prefs.travisToken) alert(`Current travis token is ${prefs.travisToken}`);
+    if (prefs.sshEnabled) alert(`SSH Github access is ${prefs.sshEnabled ? 'en':'dis'}abled`);
     if (prefs.githubOrg) alert(`Current selected organization is ${prefs.githubOrg}`);
     else return alert( 'There is no current Github organization selected.' );
   });

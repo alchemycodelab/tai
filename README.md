@@ -6,10 +6,14 @@ a tool for managing student assignment repos
 - github organization
 - github token
 - travis token
+- enabling SSH
+
+NOTE: it is highly recommended to use an ssh key and `ssh-agent` to add your key when using the `close` feature.
 ```
 tai config -o <githubOrganization> 
            -g <githubToken>
            -t <travisToken>
+           -s <true | false>
 ```
 **tai show-config**: show current configuration
 
