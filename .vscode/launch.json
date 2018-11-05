@@ -15,7 +15,7 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/index.js",
-      "args": [ "close",  "install-node" ],
+      "args": [ "close",  "pet-store" ],
     }
   ]
 }
