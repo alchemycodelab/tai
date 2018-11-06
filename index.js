@@ -8,10 +8,16 @@ const close = require('./lib/close-out');
 const openGithub = require('./lib/open-github');
 const addBranches = require('./lib/add-branches');
 const {alert, alertErr} = require('./lib/cli-tools');
+const path = require('path');
 
-const prefs = new Preferences('tai-v2');
-prefs.travisToken = undefined;
-prefs.ssnEnabled
+let app = 'tai-v3';
+
+// testing will not zero out app preferences.
+const appName = path.parse(process.argv[1]).name;
+if (appName === 'tai-test') app = 'tai-test';
+
+const prefs = new Preferences(app);
+
 
 
 program
@@ -24,16 +30,16 @@ program
     const { githubOrg, githubToken, sshEnable } = options;
     if (githubOrg) {
       prefs.githubOrg = githubOrg;
-      alert( 'github organization configured' );
+      alert( 'Github organization configured.' );
     }
     if (githubToken) {
       prefs.githubToken = githubToken;
-      alert( 'github token configured.' );
+      alert( 'Github token configured.' );
     }
     if (sshEnable) {
       if (sshEnable === 'false') prefs.sshEnabled = false;
       else prefs.sshEnabled = true;
-      alert( `SSH Github access is ${prefs.sshEnabled ? 'en':'dis'}abled` );    }
+      alert( `SSH Github access is ${prefs.sshEnabled ? 'en':'dis'}abled.` );    }
   });
 
 program
@@ -41,7 +47,7 @@ program
   .option('-s --showKeys')
   .description('Display current configuration data.')
   .action((cmd) => {
-    if (cmd.showKeys && prefs.githubToken) alert(`Current github token is ${prefs.githubToken}`);
+    if (cmd.showKeys && prefs.githubToken) alert(`Current Github token is ${prefs.githubToken}`);
     if (prefs.sshEnabled) alert(`SSH Github access is ${prefs.sshEnabled ? 'en':'dis'}abled`);
     if (prefs.githubOrg) alert(`Current selected organization is ${prefs.githubOrg}`);
     else return alert( 'There is no current Github organization selected.' );
@@ -65,7 +71,7 @@ program
     if ( !githubOrg && !githubToken ) {
       prefs.githubOrg = undefined;
       prefs.githubToken = undefined;
-      alertErr( 'Github and Travis configurations have been removed.' );
+      alertErr( 'Github configurations have been removed.' );
     }
   });
 
