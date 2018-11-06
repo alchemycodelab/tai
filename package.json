@@ -1,6 +1,6 @@
 {
   "name": "tai",
-  "version": "2.0.6",
+  "version": "3.0.0",
   "description": "a tool for managing student assignment repos",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codefellows-portland-javascript-401d2/tai.git"
+    "url": "git+https://github.com/alchemycodelab/tai.git"
   },
   "bin": {
     "tai": "./index.js"
@@ -22,19 +22,15 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/codefellows-portland-javascript-401d2/tai/issues"
+    "url": "https://github.com/alchemycodelab/tai/issues"
   },
-  "homepage": "https://github.com/codefellows-portland-javascript-401d2/tai#readme",
+  "homepage": "https://github.com/alchemycodelab/tai#readme",
   "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.19.0",
     "fs-extra": "^7.0.0",
     "github-api": "^3.0.0",
-    "preferences": "^1.0.2",
-    "sander": "^0.6.0",
-    "simple-git": "^1.106.0",
-    "superagent": "^3.8.3",
-    "sync-exec": "^0.6.2"
+    "preferences": "^1.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",

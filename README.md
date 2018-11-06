@@ -5,14 +5,12 @@ a tool for managing student assignment repos
 **tai config** - to configure the stored information
 - github organization
 - github token
-- travis token
 - enabling SSH
 
 NOTE: it is highly recommended to use an ssh key and `ssh-agent` to add your key when using the `close` feature.
 ```
 tai config -o <githubOrganization> 
            -g <githubToken>
-           -t <travisToken>
            -s <true | false>
 ```
 **tai show-config**: show current configuration
@@ -25,7 +23,6 @@ tai show-config -s
 ```
 tai clear  -o <githubOrganization> 
            -g <githubToken>
-           -t <travisToken>
 ```
 clears individual configuration objects
 ```
@@ -49,11 +46,6 @@ Optional [branches] flag available to specify a set of branches different from t
 ```
 tai setup-branches <repo_name> [branches]
 ```
-**tai setup-travis** - to activate travis on a repo
-```
-tai setup-travis <repo_name>
-```
-
 **tai close** - to merge team branches into unique folders in master
 ```
 tai close <repo_name>

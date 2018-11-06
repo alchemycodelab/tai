@@ -1,26 +1,27 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const sander = require('sander');
+const fs = require('fs-extra');
 const Preferences = require('preferences');
 
-const activateTravis = require('./lib/activate-travis');
 const close = require('./lib/close-out');
 const openGithub = require('./lib/open-github');
 const addBranches = require('./lib/add-branches');
 const {alert, alertErr} = require('./lib/cli-tools');
 
 const prefs = new Preferences('tai-v2');
+prefs.travisToken = undefined;
+prefs.ssnEnabled
+
 
 program
   .command( 'config' )
   .option( '-g --githubToken <githubToken>')
-  .option( '-t --travisToken <travisToken>')
   .option( '-o --githubOrg <githubOrg>')
   .option( '-s --sshEnable <boolean>')
   .description( 'Configure the application.' )
   .action(options => {
-    const { githubOrg, githubToken, travisToken, sshEnable } = options;
+    const { githubOrg, githubToken, sshEnable } = options;
     if (githubOrg) {
       prefs.githubOrg = githubOrg;
       alert( 'github organization configured' );
@@ -28,10 +29,6 @@ program
     if (githubToken) {
       prefs.githubToken = githubToken;
       alert( 'github token configured.' );
-    }
-    if (travisToken) {
-      prefs.travisToken = travisToken;
-      alert( 'travis token configured' );
     }
     if (sshEnable) {
       if (sshEnable === 'false') prefs.sshEnabled = false;
@@ -45,7 +42,6 @@ program
   .description('Display current configuration data.')
   .action((cmd) => {
     if (cmd.showKeys && prefs.githubToken) alert(`Current github token is ${prefs.githubToken}`);
-    if (cmd.showKeys && prefs.travisToken) alert(`Current travis token is ${prefs.travisToken}`);
     if (prefs.sshEnabled) alert(`SSH Github access is ${prefs.sshEnabled ? 'en':'dis'}abled`);
     if (prefs.githubOrg) alert(`Current selected organization is ${prefs.githubOrg}`);
     else return alert( 'There is no current Github organization selected.' );
@@ -53,12 +49,11 @@ program
 
 program
   .command('clear')
-  .description('Clear current Github and Travis data.')
+  .description('Clear current Github data.')
   .option( '-g --githubToken')
-  .option( '-t --travisToken')
   .option( '-o --githubOrg')
   .action((options) => {
-    const { githubOrg, githubToken, travisToken } = options;
+    const { githubOrg, githubToken } = options;
     if (githubOrg) {
       prefs.githubOrg = undefined;
       alertErr( 'github organization cleared.' );
@@ -67,14 +62,9 @@ program
       prefs.githubToken = undefined;
       alertErr( 'github token cleared.' );
     }
-    if (travisToken) {
-      prefs.travisToken = undefined;
-      alertErr( 'travis token cleared.' );
-    }
-    if ( !githubOrg && !githubToken && !travisToken ) {
+    if ( !githubOrg && !githubToken ) {
       prefs.githubOrg = undefined;
       prefs.githubToken = undefined;
-      prefs.travisToken = undefined;
       alertErr( 'Github and Travis configurations have been removed.' );
     }
   });
@@ -89,18 +79,6 @@ program
       .then(() => alert( `Branches created for ${repoName}` ))
       .catch( (err) => {
         alertErr('Error setting up repo.');
-        alertErr(err);
-      });
-  });
-
-program
-  .command('setup-travis <repoName>')
-  .description('Activate Travis for the specified repo')
-  .action( ( repoName ) => {
-    activateTravis( repoName, prefs )
-      .then(() => alert(`Travis-CI activated for ${repoName}`))
-      .catch( err => {
-        alertErr('Error setting up Travis-CI.');
         alertErr(err);
       });
   });
@@ -127,15 +105,13 @@ program
       alert('Teams currently set to: ');
       return console.log(prefs.students);
     }
-    sander.readFile(filepath)
-      .then(data => {
-        alert('setting student teams to \n' + data);
-        prefs.students = data.toString();
-      })
-      .catch((err) => {
-        alertErr('error setting teams');
-        console.log(err);
-      });
+    const data = fs.readFileSync(filepath, {encoding: 'utf-8'});
+    if (data) {
+      alert('setting student teams to \n' + data);
+      prefs.students = data;
+    } else {
+      alertErr('error setting teams');
+    }
   });
 
 program
