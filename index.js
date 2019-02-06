@@ -77,7 +77,7 @@ program
 
 program
   .command('setup-branches <repoName> [branches]')
-  .description('Create branches for the specified team')
+  .description('Create branches for the specified team.  Defaults to the configured team, or you can provide the branches as a JSON string in a parameter.')
   .action((repoName, branches) => {
     if (!prefs.githubOrg) return alertErr('No configuration found.  run config');
     prefs.branches = branches ? branches : prefs.students;

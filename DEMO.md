@@ -4,24 +4,23 @@ tai (TA + AI)
 `tai` is a cli tool available via `npm i tai -g` that assists in
 setting up and closing assignment github repos.
 
-Current usage is `401JS` focused:
+Current usage is `Career Track` focused:
     * Students are expected to "own" their repo
-    * TravisCI integration for linting and running tests prior to grading
     * Github PR infrastructure leveraged for code feedback
-    * Doesn't mean it couldn't be adapted for 201, 301
+    * Doesn't mean it couldn't be adapted for Bootcamp classes
 
 Workflow:
 
 ## Configuration
-* Use `tai` `config`
+* Use `tai config`
     * Store your Github Organization and an API token
-    * (Not tesed with 2-factor GH auth)
-* Use `tai` `team` for default branch list (student github accounts)
+    * (Not tested with 2-factor GH auth)
+* Use `tai team` for default branch list (student github accounts)
 
 ## For each lab assignment
 
-* Create branches and hooks with `tai` `setup` command
-    * Configured with `tai` `team`
+* Create branches with `tai setup-branches` command
+    * Configured with `tai team`
     * Or, ad-hoc with `setup` command (pairing teams, etc)
     * Turns on TravisCI hooks
 
@@ -44,8 +43,9 @@ Workflow:
 * Github does not count commits for heatmap unless:
     * Commits are merged into `master` (or whatever default branch is for repo)
     * Of non-forked repo
-* `tai` `close` merges all student branches into named folder in master
+* `tai close` merges all student branches into named folder in master
     
 ## Thank You!
 * Annika Hagelin
 * David Goodwin
+* Andrew Bodey
